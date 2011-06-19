@@ -20,7 +20,7 @@ our @EXPORT = qw(
 	
 );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub AUTOLOAD {
     # This AUTOLOAD is used to 'autoload' constants from the constant()
@@ -70,7 +70,9 @@ that can later be viewed using the rr-viewer tool.
 =head1 VIEWING THE RECORDING
 
 Use the 'rr-viewer' tool. It just takes the path with the recording as an argument. 
-Press 'q' to quit or any other key to step to the next event.
+Press 'q' to quit or any other key to step to the next event. Press 's' to skip any 
+events in the current file until end of recording. Press 'a' to toggle wether we should 
+skip whatever is in @INC when the recorder what loaded.
 
 =head1 TODO
 
