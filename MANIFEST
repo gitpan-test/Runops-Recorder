@@ -1,13 +1,18 @@
+bin/rr-diff
+bin/rr-viewer
 Changes
-Recorder.xs
+lib/Runops/Recorder.pm
+lib/Runops/Recorder/Reader.pm
+lib/Runops/Recorder/Viewer.pm
+lib/Runops/Recorder/Viewer/Diff.pm
 Makefile.PL
 MANIFEST
 ppport.h
 README
-t/Runops-Recorder.t
-fallback/const-c.inc
-fallback/const-xs.inc
-lib/Runops/Recorder.pm
-lib/Runops/Recorder/Viewer.pm
-bin/rr-viewer
+Recorder.xs
+t/01-runops.t
+t/02-reader.t
+t/03-reader-handler-object.t
+t/04-reader-handler-callbacks.t
+t/data/example.pl
 META.yml                                 Module meta-data (added by MakeMaker)
