@@ -1,5 +1,12 @@
 Revision history for Perl extension Runops::Recorder.
 
+0.05  Wed Jun 29
+    - Improved documentation on how to use this
+    - 'die' is now recorded
+    - Events are now written to a buffer before being written down to disk
+      to reduce the I/O
+    - Subroutine names are now fully qualified
+    
 0.04  Mon Jun 27
     - The format of recordings has changed and is now a directory with a bunch
       of files instead.
