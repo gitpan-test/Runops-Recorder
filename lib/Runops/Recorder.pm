@@ -9,7 +9,7 @@ use Carp;
 use File::Path qw(make_path);
 use POSIX qw(strftime);
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 require XSLoader;
 XSLoader::load('Runops::Recorder', $VERSION);
@@ -18,7 +18,7 @@ sub import {
     my ($pkg, @opts) = @_;
 
     my $target_dir;
-    $target_dir = $opts[0] if $opts[0] !~ /^-/;
+    $target_dir = $opts[0] if defined $opts[0] && $opts[0] !~ /^-/;
     
     unless ($target_dir) {
         unless ($ENV{RR_TARGET_DIR}) {

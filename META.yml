@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Runops-Recorder
-version:            0.05
+version:            0.06
 abstract:           Runops replacement which saves what is being performed
 author:
     - Claes Jakobsson <claesjac@cpan.org>
