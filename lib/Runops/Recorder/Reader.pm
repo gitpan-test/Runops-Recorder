@@ -27,15 +27,25 @@ use constant {
     DIE             => 3,
     ENTER_SUB       => 4,
     KEYFRAME_TZ     => 5,
+    PADSV           => 6,
+    LEAVE_SUB       => 7,
+    KEYFRAME_TZ_U   => 8,
 };
 
 sub new {
-    my ($pkg, $dir, $opts) = @_;
+    my ($pkg, $path, $opts) = @_;
     
     $opts //= {};
     
-    open my $data_fh, "<", File::Spec->catfile($dir, "main.data") or die $!;
-    open my $identifiers_fh, "<", File::Spec->catfile($dir, "main.identifiers") or die $!;
+    my $file = "main.data";
+    if (-f $path) {
+        (undef, $path, $file) = File::Spec->splitpath($path);
+    }
+    
+    open my $data_fh, "<", File::Spec->catfile($path, $file) 
+        or die "Can't read $path/$file because of: $!";
+    open my $identifiers_fh, "<", File::Spec->catfile($path, "main.identifiers") 
+        or die "Can't read $path/main.identifiers because of: $!";
     
     my $handler;
     if ($opts->{handler}) {
@@ -70,6 +80,9 @@ sub new {
         3 => 'on_die',
         4 => 'on_enter_sub',
         5 => 'on_keyframe_timestamp',
+        6 => 'on_padsv',
+        7 => 'on_leave_sub',
+        8 => 'on_keyframe_timestamp_usec',
     );
     
     my %CMD_DATA_TRANSFORMER = (
@@ -78,10 +91,10 @@ sub new {
         2 => sub { my ($line_no) = unpack("L", $_[0]); return ($line_no) },
         3 => sub {},
         4 => sub { my ($identifier_no) = unpack("L", $_[0]); return ($identifier_no, $_[1]->get_identifier($identifier_no)) },
-        5 => sub { 
-            my ($seconds, $microseconds) = unpack("LL", $_[0]);
-            return ($seconds, $microseconds);
-        }
+        5 => sub { my ($sec) = unpack("L", $_[0]); return ($sec); },
+        6 => sub { my ($identifier_no) = unpack("L", $_[0]); return ($identifier_no, $_[1]->get_identifier($identifier_no)) },
+        7 => sub { my ($identifier_no) = unpack("L", $_[0]); return ($identifier_no, $_[1]->get_identifier($identifier_no)) },
+        8 => sub { my ($usec) = unpack("L", $_[0]); return ($usec); },
     );
     
     sub _make_class_handler {
@@ -143,7 +156,9 @@ my @read_extra = (
     0, 
     0,
     0,
-    4 
+    0,
+    0,
+    0, 
 );
 
 sub read_next {

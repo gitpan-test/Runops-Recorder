@@ -6,7 +6,12 @@ use strict;
 use warnings;
 
 use Test::More qw(no_plan);
-BEGIN { use_ok("Runops::Recorder::Reader"); }
+use File::Path qw(remove_tree);
+
+BEGIN { 
+    remove_tree("test-recording");
+    use_ok("Runops::Recorder::Reader"); 
+}
 
 # Generate some data
 qx{$^X -Mblib -MRunops::Recorder=test-recording t/data/example.pl};
@@ -62,7 +67,7 @@ is(scalar keys %seen_file, 3),
 is($next_statements, 14);
 is($enter_subs, 3);
 is($seen_subs{3}, 'strict::import');
-is($seen_subs{7}, 'main::foo');
+is($seen_subs{9}, 'main::foo');
 is(scalar keys %seen_subs, 3),
 is($die, 1);
 ok(defined $last_sec_tz);

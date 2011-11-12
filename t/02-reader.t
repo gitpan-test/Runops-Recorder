@@ -4,7 +4,12 @@ use strict;
 use warnings;
 
 use Test::More qw(no_plan);
-BEGIN { use_ok("Runops::Recorder::Reader"); }
+use File::Path qw(remove_tree);
+
+BEGIN { 
+    remove_tree("test-recording");
+    use_ok("Runops::Recorder::Reader"); 
+}
 
 # Generate some data
 qx{$^X -Mblib -MRunops::Recorder=test-recording t/data/example.pl};
@@ -19,7 +24,11 @@ is_deeply ([$reader->decode($cmd, $data)], []);
 
 ($cmd, $data) = $reader->read_next();
 is($cmd, 5);
-is(length $data, 8);
+is(length $data, 4);
+
+($cmd, $data) = $reader->read_next();
+is($cmd, 8);
+is(length $data, 4);
 
 ($cmd, $data) = $reader->read_next();
 is($cmd, 1);
@@ -42,5 +51,5 @@ like ($reader->get_identifier(4), qr/strict\.pm$/);
 $reader->skip_until(4);
 ($cmd, $data) = $reader->read_next();
 is($cmd, 4);
-is($data, "\5\0\0\0");
+is($data, "\6\0\0\0");
 is($reader->get_identifier(3), "strict::import");

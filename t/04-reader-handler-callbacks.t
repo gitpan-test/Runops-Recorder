@@ -6,7 +6,12 @@ use strict;
 use warnings;
 
 use Test::More qw(no_plan);
-BEGIN { use_ok("Runops::Recorder::Reader"); }
+use File::Path qw(remove_tree);
+
+BEGIN { 
+    remove_tree("test-recording");
+    use_ok("Runops::Recorder::Reader"); 
+}
 
 # Generate some data
 qx{$^X -Mblib -MRunops::Recorder=test-recording t/data/example.pl};
@@ -32,7 +37,7 @@ my $reader = Runops::Recorder::Reader->new("test-recording", { handlers => \%han
 $reader->read_all;
 
 is($keyframes, 1);
-is($keyframe_timestamps, 1);
+is($keyframe_timestamps, 2);
 is($switched_files, 5);
 is($enter_subs, 3);
 is($next_statements, 14);
