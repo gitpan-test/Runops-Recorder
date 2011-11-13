@@ -11,7 +11,7 @@ use POSIX qw(strftime);
 
 use constant DEFAULT_BUFFER_SIZE => 64 * 1024;
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 require XSLoader;
 XSLoader::load('Runops::Recorder', $VERSION);
@@ -128,6 +128,17 @@ should be the sleep time until stepping. And yes, it uses Time::HiRes so you can
 give it fracitonal seconds.
 
 If you set RR_SKIP_INC the autorun will not show @INC files as the 'a' option does.
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item dump ( $name )
+
+Dumps the buffer as I<$name> in the recording. Adds .dump to the $name if 
+ommited.
+
+=back
 
 =head1 TODO
 

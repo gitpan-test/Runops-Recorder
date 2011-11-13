@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Runops-Recorder
-version:            0.08
+version:            0.09
 abstract:           Runops replacement which saves what is being performed
 author:
     - Claes Jakobsson <claesjac@cpan.org>
@@ -11,7 +11,9 @@ configure_requires:
 build_requires:
     ExtUtils::MakeMaker:  0
 requires:
-    Term::Screen:  0
+    accessors::ro:  0
+    Term::ReadKey:  0
+    Term::Screen:   0
 no_index:
     directory:
         - t
